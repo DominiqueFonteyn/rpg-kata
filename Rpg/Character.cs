@@ -27,7 +27,7 @@ public class Character : ITakeDamage, IReceiveHealing
         }
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         CurrentHealth -= damage;
 
@@ -38,8 +38,13 @@ public class Character : ITakeDamage, IReceiveHealing
         }
     }
 
-    public void Damage(ITakeDamage target, int damage)
+    public virtual void Damage(ITakeDamage target, int damage)
     {
+        if (IsSelf(target))
+        {
+            return;
+        }
+
         target.TakeDamage(damage);
     }
 
@@ -58,5 +63,10 @@ public class Character : ITakeDamage, IReceiveHealing
     private bool ExceedsMinimumHealth()
     {
         return CurrentHealth < MinimumHealth;
+    }
+
+    private bool IsSelf(ITakeDamage target)
+    {
+        return target == this;
     }
 }

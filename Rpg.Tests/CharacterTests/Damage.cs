@@ -17,4 +17,16 @@ public class Damage : CharacterTestBase
             .Received(1)
             .TakeDamage(damage);
     }
+
+    [Fact]
+    public void TargetIsSelf_DoesNotCallTakeDamage()
+    {
+        var player = Substitute.ForPartsOf<Character>();
+
+        player.Damage(player, 100);
+        
+        player
+            .DidNotReceive()
+            .TakeDamage(100);
+    }
 }

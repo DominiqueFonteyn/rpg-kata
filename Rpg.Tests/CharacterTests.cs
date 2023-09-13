@@ -4,7 +4,7 @@ namespace Rpg.Tests;
 
 public class CharacterTests
 {
-    private const int InitialHealth = 1000;
+    private const int MaximumHealth = 1000;
     private const int MinimumHealth = 0;
 
     [Fact]
@@ -12,7 +12,7 @@ public class CharacterTests
     {
         var c = new Character();
 
-        Assert.Equal(InitialHealth, c.Health);
+        Assert.Equal(MaximumHealth, c.Health);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class CharacterTests
         var target = Substitute.For<ITakeDamage>();
 
         player.Damage(target, damage);
-        
+
         target
             .Received(1)
             .TakeDamage(damage);
@@ -52,40 +52,99 @@ public class CharacterTests
         var player = new Character();
 
         player.TakeDamage(damage);
-        
-        Assert.Equal(InitialHealth - damage, player.Health);
+
+        Assert.Equal(MaximumHealth - damage, player.Health);
     }
 
     [Fact]
     public void TakeDamage_DamageExceedsCurrentHealth_Dies()
     {
         var player = new Character();
-        
-        player.TakeDamage(InitialHealth + 300);
-        
+
+        player.TakeDamage(MaximumHealth + 300);
+
         Assert.Equal(CharacterStatus.Dead, player.Status);
     }
-    
+
     [Fact]
     public void TakeDamage_DamageExceedsCurrentHealth_HealthIsZero()
     {
         var player = new Character();
-        
-        player.TakeDamage(InitialHealth + 300);
-        
+
+        player.TakeDamage(MaximumHealth + 300);
+
         Assert.Equal(MinimumHealth, player.Health);
     }
-    
+
     [Fact]
     public void TakeDamage_HealthMoreThanZero_StillAlive()
     {
         var player = new Character();
-        
-        player.TakeDamage(InitialHealth - 300);
-        
+
+        player.TakeDamage(MaximumHealth - 300);
+
         Assert.Equal(CharacterStatus.Alive, player.Status);
     }
+
+    [Fact]
+    public void IsDead_StatusEqualsDead_ReturnsTrue()
+    {
+        var player = new Character();
+        var target = new Character();
+        
+        player.Damage(target, MaximumHealth + 100);
+        
+        Assert.True(target.IsDead);
+    }
     
+    [Fact]
+    public void IsDead_StatusEqualAlive_ReturnsAlive()
+    {
+        var player = new Character();
+
+        Assert.False(player.IsDead);
+    }
+
+    [Fact]
+    public void Heal_CallsIsDead()
+    {
+        var player = new Character();
+        var target = Substitute.For<IReceiveHealing>();
+        target.IsDead.Returns(false);
+
+        player.Heal(target, 500);
+
+        _ = target
+            .Received(1)
+            .IsDead;
+    }
+
+    [Fact]
+    public void Heal_TargetNotDead_CallsReceiveHealing()
+    {
+        const int health = 300;
+        var player = new Character();
+        var target = Substitute.For<IReceiveHealing>();
+        target.IsDead.Returns(false);
+
+        player.Heal(target, health);
+
+        target
+            .Received(1)
+            .ReceiveHealing(health);
+    }
+
+    [Fact]
+    public void Heal_TargetDead_DoesNotCallReceiveHealing()
+    {
+        var player = new Character();
+        var target = Substitute.For<IReceiveHealing>();
+        target.IsDead.Returns(true);
+
+        player.Heal(target, 500);
+
+        target
+            .DidNotReceive()
+            .ReceiveHealing(Arg.Any<int>());
+    }
 }
-
-

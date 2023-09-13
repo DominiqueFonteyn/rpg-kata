@@ -1,11 +1,8 @@
 namespace Rpg;
 
-public class Character : ITakeDamage
+public class Character : ITakeDamage, IReceiveHealing
 {
     private const int MinimumHealth = 0;
-    public int Health { get; private set; }
-    public int Level { get; }
-    public CharacterStatus Status { get; private set; }
 
     public Character()
     {
@@ -13,10 +10,16 @@ public class Character : ITakeDamage
         Level = 1;
     }
 
-    public void Damage(ITakeDamage target, int damage)
+    public int Health { get; private set; }
+    public int Level { get; }
+    public CharacterStatus Status { get; private set; }
+
+    public void ReceiveHealing(int health)
     {
-        target.TakeDamage(damage);
+        throw new NotImplementedException();
     }
+
+    public bool IsDead => Status == CharacterStatus.Dead;
 
     public void TakeDamage(int damage)
     {
@@ -27,5 +30,17 @@ public class Character : ITakeDamage
             Health = MinimumHealth;
             Status = CharacterStatus.Dead;
         }
+    }
+
+    public void Damage(ITakeDamage target, int damage)
+    {
+        target.TakeDamage(damage);
+    }
+
+    public void Heal(IReceiveHealing target, int health)
+    {
+        if (target.IsDead) return;
+        
+        target.ReceiveHealing(health);
     }
 }

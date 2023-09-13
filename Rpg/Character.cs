@@ -3,31 +3,37 @@ namespace Rpg;
 public class Character : ITakeDamage, IReceiveHealing
 {
     private const int MinimumHealth = 0;
+    private const int MaximumHealth = 1000;
 
     public Character()
     {
-        Health = 1000;
+        CurrentHealth = MaximumHealth;
         Level = 1;
     }
 
-    public int Health { get; private set; }
+    public int CurrentHealth { get; private set; }
     public int Level { get; }
     public CharacterStatus Status { get; private set; }
 
+    public bool IsDead => Status == CharacterStatus.Dead;
+
     public void ReceiveHealing(int health)
     {
-        throw new NotImplementedException();
-    }
+        CurrentHealth += health;
 
-    public bool IsDead => Status == CharacterStatus.Dead;
+        if (CurrentHealth > MaximumHealth)
+        {
+            CurrentHealth = MaximumHealth;
+        }
+    }
 
     public void TakeDamage(int damage)
     {
-        Health -= damage;
+        CurrentHealth -= damage;
 
-        if (Health < MinimumHealth)
+        if (CurrentHealth < MinimumHealth)
         {
-            Health = MinimumHealth;
+            CurrentHealth = MinimumHealth;
             Status = CharacterStatus.Dead;
         }
     }
@@ -40,7 +46,7 @@ public class Character : ITakeDamage, IReceiveHealing
     public void Heal(IReceiveHealing target, int health)
     {
         if (target.IsDead) return;
-        
+
         target.ReceiveHealing(health);
     }
 }

@@ -12,7 +12,7 @@ public class CharacterTests
     {
         var c = new Character();
 
-        Assert.Equal(MaximumHealth, c.Health);
+        Assert.Equal(MaximumHealth, c.CurrentHealth);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class CharacterTests
 
         player.TakeDamage(damage);
 
-        Assert.Equal(MaximumHealth - damage, player.Health);
+        Assert.Equal(MaximumHealth - damage, player.CurrentHealth);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class CharacterTests
 
         player.TakeDamage(MaximumHealth + 300);
 
-        Assert.Equal(MinimumHealth, player.Health);
+        Assert.Equal(MinimumHealth, player.CurrentHealth);
     }
 
     [Fact]
@@ -146,5 +146,28 @@ public class CharacterTests
         target
             .DidNotReceive()
             .ReceiveHealing(Arg.Any<int>());
+    }
+
+    [Fact]
+    public void ReceiveHealing_IncreasesCurrentHealth()
+    {
+        const int damage = 500;
+        const int health = 100;
+        var player = new Character();
+        player.TakeDamage(damage);
+
+        player.ReceiveHealing(health);
+        
+        Assert.Equal(MaximumHealth - damage + health, player.CurrentHealth);
+    }
+    
+    [Fact]
+    public void ReceiveHealing_ExceedsMaxHealth_ResetsToMaxHealth()
+    {
+        var player = new Character();
+
+        player.ReceiveHealing(100);
+        
+        Assert.Equal(MaximumHealth, player.CurrentHealth);
     }
 }

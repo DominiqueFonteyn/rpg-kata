@@ -21,7 +21,7 @@ public class Character : ITakeDamage, IReceiveHealing
     {
         CurrentHealth += health;
 
-        if (CurrentHealth > MaximumHealth)
+        if (ExceedsMaximumHealth())
         {
             CurrentHealth = MaximumHealth;
         }
@@ -31,7 +31,7 @@ public class Character : ITakeDamage, IReceiveHealing
     {
         CurrentHealth -= damage;
 
-        if (CurrentHealth < MinimumHealth)
+        if (ExceedsMinimumHealth())
         {
             CurrentHealth = MinimumHealth;
             Status = CharacterStatus.Dead;
@@ -48,5 +48,15 @@ public class Character : ITakeDamage, IReceiveHealing
         if (target.IsDead) return;
 
         target.ReceiveHealing(health);
+    }
+
+    private bool ExceedsMaximumHealth()
+    {
+        return CurrentHealth > MaximumHealth;
+    }
+
+    private bool ExceedsMinimumHealth()
+    {
+        return CurrentHealth < MinimumHealth;
     }
 }

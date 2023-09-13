@@ -2,9 +2,10 @@ namespace Rpg;
 
 public class Character : ITakeDamage
 {
+    private const int MinimumHealth = 0;
     public int Health { get; private set; }
     public int Level { get; }
-    public CharacterStatus Status { get; }
+    public CharacterStatus Status { get; private set; }
 
     public Character()
     {
@@ -20,10 +21,11 @@ public class Character : ITakeDamage
     public void TakeDamage(int damage)
     {
         Health -= damage;
-    }
-}
 
-public interface ITakeDamage
-{
-    void TakeDamage(int damage);
+        if (Health < MinimumHealth)
+        {
+            Health = MinimumHealth;
+            Status = CharacterStatus.Dead;
+        }
+    }
 }

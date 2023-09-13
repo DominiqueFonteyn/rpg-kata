@@ -1,3 +1,5 @@
+using NSubstitute;
+
 namespace Rpg.Tests;
 
 public class CharacterTests
@@ -25,4 +27,28 @@ public class CharacterTests
 
         Assert.Equal(CharacterStatus.Alive, c.Status);
     }
+
+    [Fact]
+    public void Damage_CallsTakeDamage()
+    {
+        var player = new Character();
+        var target = Substitute.For<ITakeDamage>();
+
+        player.Damage(target, 300);
+        
+        target.Received(1).TakeDamage(300);
+    }
+
+    [Fact]
+    public void TakeDamage_ReducesHealth()
+    {
+        var player = new Character();
+        
+        player.TakeDamage(300);
+        
+        Assert.Equal(700, player.Health);
+    }
+    
 }
+
+

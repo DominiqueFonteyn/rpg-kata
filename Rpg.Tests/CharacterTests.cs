@@ -9,4 +9,12 @@ public class CharacterTests
         
         Assert.Equal(1000, character.Health);
     }
+
+    [Fact]
+    public void CreatedCharacter_HasLevelEqualTo1()
+    {
+        var character = new Character();
+        
+        Assert.Equal(1, character.Level);
+    }
 }

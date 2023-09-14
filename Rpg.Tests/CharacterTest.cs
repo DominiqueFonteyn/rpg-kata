@@ -31,14 +31,9 @@ namespace Rpg.Tests
 
     public class Character
     {
-        public Character()
-        {
-            Health = 1000;
-            Level = 1;
-        }
 
-        public int Health { get; }
-        public int Level { get; }
-        public bool IsAlive { get; }
+        public int Health { get; } = 1000;
+        public int Level { get; } = 1;
+        public bool IsAlive { get; } = true;
     }
 }

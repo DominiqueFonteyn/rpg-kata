@@ -77,4 +77,24 @@ public class DoDamageShould
         
     }
 
+    [Fact]
+    public void DamageTargetWith5LevelsOrLess()
+    {
+        var hunter = new Character()
+        {
+            Level = 6,
+        };
+        var victim = new Character()
+        {
+            Level = 1,
+            Health = 800,
+        };
+        var damage = 100;
+
+        hunter.DoDamage(victim, damage);
+
+        Assert.Equal(600, victim.Health);
+
+    }
+
 }

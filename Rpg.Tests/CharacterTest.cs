@@ -77,8 +77,19 @@
 
             Assert.Equal(950, simon.Health);
         }
-    }
+        [Fact]
+        public void Level5higherIncreaseDammage()
+        {
+            var simon = new Character();
+            var ole = new Character();
 
+            simon.LevelUp(5);
+            ole.Damage(simon, 100);
+            Assert.Equal(850, simon.Health);
+
+
+        }
+    }
     public class Character
     {
         public int Health { get; protected set; } = 1000;
@@ -96,9 +107,9 @@
         {
             if (this == otherCharacter)
                 throw new Exception();
-            otherCharacter.Health = otherCharacter.Health - damage;
+            otherCharacter.Health = otherCharacter.Health - ((bool)(Level - otherCharacter.Level >= 5) ? damage / 2:damage) ;
         }
-
+        
         public void Heal(Character self)
         {
             if (this != self)

@@ -12,14 +12,14 @@ namespace Rpg.Tests
         public void DamageSubstracted_Succeed()
         {
             someCharacter.DealDamage(otherCharacter, 1);
-            Assert.Equal(otherCharacter.Health, 999);
+            Assert.Equal(999, otherCharacter.Health);
             Assert.True(otherCharacter.Alive);
         }
         [Fact]
         public void DamageKill_Succeed()
         {
             someCharacter.DealDamage(otherCharacter, 1001);
-            Assert.Equal(otherCharacter.Health, 0);
+            Assert.Equal(0, otherCharacter.Health);
             Assert.False(otherCharacter.Alive);
         }
 
@@ -27,7 +27,7 @@ namespace Rpg.Tests
         public void ExactDamageAlive_Succeed()
         {
             someCharacter.DealDamage(otherCharacter, otherCharacter.Health);
-            Assert.Equal(otherCharacter.Health, 0);
+            Assert.Equal(0, otherCharacter.Health);
             Assert.True(otherCharacter.Alive);
         }
 

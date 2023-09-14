@@ -1,11 +1,12 @@
 ﻿namespace Rpg;
 
-public class Character
+public abstract class Character
 {
+    protected int Range { get; set; }
     private const int StartingHealth = 1000;
-    private const int StartingLevel = 1;
+    protected const int StartingLevel = 1;
 
-    public Character(int level = StartingLevel)
+    public Character(int level)
     {
         Health = StartingHealth;
         Level = level;
@@ -16,7 +17,9 @@ public class Character
     public int Health { get; private set; }
     public int Level { get; private set; }
     public bool Alive => Health > 0;
+    public List<string> Factions { get; } = new List<string>();
 
+    private bool IsInRange(int distance) => distance <= Range;
     public void TakeDamage(int damage)
     {
         var healthAfterDamage = Health - damage; 
@@ -42,9 +45,9 @@ public class Character
         Heal(healingAmount);
     }
 
-    public void Attack(Character target, int damage)
+    public void Attack(Character target, int damage, int distance = 1)
     {
-        if (Id == target.Id) return;
+        if (Id == target.Id || !IsInRange((distance))) return;
         
         var damageMultiplier = CalculateAttackModifier(target);
 
@@ -61,5 +64,10 @@ public class Character
             return 1.5m;
 
         return 1;
+    }
+    
+    public void JoinFaction(string faction)
+    {
+        Factions.Add(faction);
     }
 }

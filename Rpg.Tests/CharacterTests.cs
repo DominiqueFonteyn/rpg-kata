@@ -3,121 +3,121 @@
 public class CharacterTests
 {
     [Fact]
-    public void WhenCreatingACharacter_ShouldHaveHealthEqual1000()
+    public void WhenCreatingAMeleeFighter_ShouldHaveHealthEqual1000()
     {
-        var character = new Character();
+        var meleeFighter = new MeleeFighter();
         
-        Assert.Equal(1000, character.Health);
+        Assert.Equal(1000, meleeFighter.Health);
     }
 
     [Fact]
-    public void WhenCreatingACharacter_ShouldBeLevel1()
+    public void WhenCreatingAMeleeFighter_ShouldBeLevel1()
     {
-        var character = new Character();
+        var meleeFighter = new MeleeFighter();
         
-        Assert.Equal(1, character.Level);
+        Assert.Equal(1, meleeFighter.Level);
     }
 
     [Fact]
-    public void WhenCreatingACharacter_ItIsAlive()
+    public void WhenCreatingAMeleeFighter_ItIsAlive()
     {
-        var character = new Character();
+        var meleeFighter = new MeleeFighter();
         
-        Assert.True(character.Alive);
+        Assert.True(meleeFighter.Alive);
     }
 
     [Fact]
-    public void TakeDamage_WhenTakingDamage_CharacterHealthGoesDown()
+    public void TakeDamage_WhenTakingDamage_MeleeFighterHealthGoesDown()
     {
-        var character = new Character();
+        var meleeFighter = new MeleeFighter();
 
-        character.TakeDamage(100);
+        meleeFighter.TakeDamage(100);
         
-        Assert.Equal(900, character.Health); 
+        Assert.Equal(900, meleeFighter.Health); 
     }
 
     [Fact]
-    public void TakeDamage_WhenTakingMoreDamageThanHealth_CharacterDiesAndHealthIsZero()
+    public void TakeDamage_WhenTakingMoreDamageThanHealth_MeleeFighterDiesAndHealthIsZero()
     {
-        var character = new Character();
+        var meleeFighter = new MeleeFighter();
         
-        character.TakeDamage(character.Health+1);
+        meleeFighter.TakeDamage(meleeFighter.Health+1);
         
-        Assert.Equal(0, character.Health);
-        Assert.False(character.Alive);
+        Assert.Equal(0, meleeFighter.Health);
+        Assert.False(meleeFighter.Alive);
     }
 
     [Fact]
     public void Heal_WhenHealingNegativeAmount_ThrowException()
     {
-        var character = new Character();
+        var meleeFighter = new MeleeFighter();
         
-        void Act() => character.HealSelf(-10);
+        void Act() => meleeFighter.HealSelf(-10);
 
         Assert.Throws<ApplicationException>(Act);
     }
     
     [Fact]
-    public void Heal_WhenCharacterIsHealed_IncreaseHealth()
+    public void Heal_WhenMeleeFighterIsHealed_IncreaseHealth()
     {
-        var character = new Character();
-        var startingHealth = character.Health;
-        character.TakeDamage(1);
+        var meleeFighter = new MeleeFighter();
+        var startingHealth = meleeFighter.Health;
+        meleeFighter.TakeDamage(1);
 
-        character.HealSelf(1);
+        meleeFighter.HealSelf(1);
         
-        Assert.Equal(character.Health, startingHealth);
+        Assert.Equal(meleeFighter.Health, startingHealth);
     }
 
     [Fact]
-    public void Heal_WhenCharacterIsDead_ItCannotBeHealed()
+    public void Heal_WhenMeleeFighterIsDead_ItCannotBeHealed()
     {
-        var character = new Character();
-        character.TakeDamage(character.Health);
+        var meleeFighter = new MeleeFighter();
+        meleeFighter.TakeDamage(meleeFighter.Health);
         
-        character.HealSelf(1);
+        meleeFighter.HealSelf(1);
         
-        Assert.False(character.Alive);
+        Assert.False(meleeFighter.Alive);
     }
 
     [Fact]
-    public void Heal_WhenCharacterIsHealedAbove1000_HealthShouldBe1000()
+    public void Heal_WhenMeleeFighterIsHealedAbove1000_HealthShouldBe1000()
     {
-        var character = new Character();
-        character.TakeDamage(1);
+        var meleeFighter = new MeleeFighter();
+        meleeFighter.TakeDamage(1);
         
-        character.HealSelf(10);
+        meleeFighter.HealSelf(10);
         
-        Assert.Equal(1000, character.Health);
+        Assert.Equal(1000, meleeFighter.Health);
     }
 
     [Fact]
-    public void DealDamage_ACharacterDealsDamage()
+    public void DealDamage_AMeleeFighterDealsDamage()
     {
-        var character1 = new Character();
-        var character2 = new Character();
+        var meleeFighter1 = new MeleeFighter();
+        var meleeFighter2 = new MeleeFighter();
 
-        character1.Attack(character2, 100);
+        meleeFighter1.Attack(meleeFighter2, 100);
         
-        Assert.Equal(900, character2.Health);
+        Assert.Equal(900, meleeFighter2.Health);
     }
 
     [Fact]
-    public void DealDamage_ACharacterCannotDamageItself()
+    public void DealDamage_AMeleeFighterCannotDamageItself()
     {
-        var character = new Character();
-        var startingHealth = character.Health;
+        var meleeFighter = new MeleeFighter();
+        var startingHealth = meleeFighter.Health;
 
-        character.Attack(character, 100);
+        meleeFighter.Attack(meleeFighter, 100);
         
-        Assert.Equal(startingHealth, character.Health);
+        Assert.Equal(startingHealth, meleeFighter.Health);
     }
 
     [Fact]
-    public void DealDamage_WhenTargetLevelIs5OrHigherlevelThanAttacker_ReduceDamage()
+    public void DealDamage_WhenTargetLevelIs5OrHigherLevelThanAttacker_ReduceDamage()
     {
-        var attacker = new Character();
-        var target = new Character(6);
+        var attacker = new MeleeFighter();
+        var target = new MeleeFighter(6);
         var intendedDamage = 100;
         var startingHealth = target.Health;
         
@@ -128,10 +128,10 @@ public class CharacterTests
     }
     
     [Fact]
-    public void DealDamage_WhenTargetLevelIs5OrHigherlevelThanAttacker_ReduceDamageRoundedDown()
+    public void DealDamage_WhenTargetLevelIs5OrHigherLevelThanAttacker_ReduceDamageRoundedDown()
     {
-        var attacker = new Character();
-        var target = new Character(6);
+        var attacker = new MeleeFighter();
+        var target = new MeleeFighter(6);
         var intendedDamage = 99;
         var startingHealth = target.Health;
         
@@ -142,10 +142,10 @@ public class CharacterTests
     }
     
     [Fact]
-    public void DealDamage_WhenAttackerLevelIs5OrHigherlevelThanTarget_increaseDamageRoundedDown()
+    public void DealDamage_WhenAttackerLevelIs5OrHigherLevelThanTarget_increaseDamageRoundedDown()
     {
-        var attacker = new Character(6);
-        var target = new Character();
+        var attacker = new MeleeFighter(6);
+        var target = new MeleeFighter();
         var intendedDamage = 100;
         var startingHealth = target.Health;
         
@@ -153,5 +153,71 @@ public class CharacterTests
 
         var actualDamage = (int) Math.Floor(intendedDamage* 1.5m) ;
         Assert.Equal(startingHealth - actualDamage, target.Health);
+    }
+
+    [Fact]
+    public void DealDamage_MeleeFighterCantAttackOutside2Meters()
+    {
+        var attacker = new MeleeFighter();
+        var target = new MeleeFighter();
+        var startingHealth = target.Health;
+
+        attacker.Attack(target, 100, distance: 4); 
+        Assert.Equal(target.Health, startingHealth);
+    }
+    
+    [Fact]
+    public void DealDamage_MeleeFighterCanAttackWithin2Meters()
+    {
+        var attacker = new MeleeFighter();
+        var target = new MeleeFighter();
+        var startingHealth = target.Health;
+
+        attacker.Attack(target, 100, distance: 1); 
+        Assert.NotEqual(target.Health, startingHealth);
+    }
+    
+    [Fact]
+    public void DealDamage_RangedFighterCantAttackOutside20Meters()
+    {
+        var attacker = new RangedFighter();
+        var target = new RangedFighter();
+        var startingHealth = target.Health;
+
+        attacker.Attack(target, 100, distance: 25); 
+        Assert.Equal(target.Health, startingHealth);
+    }
+    
+    [Fact]
+    public void DealDamage_RangedFighterCanAttackWithin20Meters()
+    {
+        var attacker = new RangedFighter();
+        var target = new RangedFighter();
+        var startingHealth = target.Health;
+
+        attacker.Attack(target, 100, distance: 15); 
+        Assert.NotEqual(target.Health, startingHealth);
+    }
+
+    [Fact]
+    public void CharactersMayBelongToMultipleFactions()
+    {
+        var character = new MeleeFighter();
+        string faction1 = "faction1";
+        string faction2 = "faction2";
+        
+        character.JoinFaction(faction1);
+        character.JoinFaction(faction2);
+        
+        Assert.Collection(character.Factions,
+            f =>
+            {
+                Assert.Equal(f, faction1);
+            },
+            f =>
+            {
+                Assert.Equal(f, faction2);
+            });
+        
     }
 }

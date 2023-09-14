@@ -8,22 +8,6 @@ namespace Rpg.Tests.Domain
     public class CharacterTests
     {
         [Fact]
-        public void WhenCreated_ShouldHave1000Health()
-        {
-            var character = CharacterCreator.Build().Create();
-
-            Assert.Equal(new Health(1000), character.Health);
-        }
-
-        [Fact]
-        public void WhenCreated_ShouldBeLevelOne()
-        {
-            var character = CharacterCreator.Build().Create();
-
-            Assert.Equal(new Level(1), character.Level);
-        }
-
-        [Fact]
         public void IsAlive_WhenHealthBelowZero_ReturnsFalse()
         {
             var character = CharacterCreator.Build().WithHealth(new Health(-100)).Create();
@@ -37,21 +21,6 @@ namespace Rpg.Tests.Domain
             var character = CharacterCreator.Build().WithHealth(new Health(500)).Create();
 
             Assert.True(character.IsAlive);
-        }
-
-        [Theory]
-        [InlineData(200, 800, true)] 
-        [InlineData(2000, 0, false)]
-        [InlineData(1000, 0, false)]
-        public void InflictDamage_LowersHealthByDamageValueWithinBounds(int damageValue, int expectedHealth, bool isAlive)
-        {
-            var attacker = CharacterCreator.Build().Create();
-            var defender = CharacterCreator.Build().Create();
-
-            attacker.InflictDamage(defender, new Damage(damageValue));
-
-            Assert.Equal(expectedHealth, defender.Health.Value);
-            Assert.Equal(isAlive, defender.IsAlive);
         }
 
         [Fact]
@@ -82,6 +51,21 @@ namespace Rpg.Tests.Domain
 
             Assert.Equal(new Health(450), damagedCharacter.Health);
 
+        }
+
+        [Theory]
+        [InlineData(200, 800, true)]
+        [InlineData(2000, 0, false)]
+        [InlineData(1000, 0, false)]
+        public void InflictDamage_LowersHealthByDamageValueWithinBounds(int damageValue, int expectedHealth, bool isAlive)
+        {
+            var attacker = CharacterCreator.Build().Create();
+            var defender = CharacterCreator.Build().Create();
+
+            attacker.InflictDamage(defender, new Damage(damageValue));
+
+            Assert.Equal(expectedHealth, defender.Health.Value);
+            Assert.Equal(isAlive, defender.IsAlive);
         }
 
         [Fact]

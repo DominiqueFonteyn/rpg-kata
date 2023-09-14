@@ -39,6 +39,14 @@ public class CharacterCreatorTests
     }
 
     [Fact]
+    public void WhenCreated_BelongsToNoFaction()
+    {
+        var character = CharacterCreator.Build().Create();
+
+        Assert.Empty(character.Factions);
+    }
+
+    [Fact]
     public void WhenCreated_SetsValues()
     {
         var fightingType = FightingType.Ranged;

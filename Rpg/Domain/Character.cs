@@ -10,13 +10,28 @@ namespace Rpg.Domain
         public Health Health { get; private set; }
         public bool IsAlive => Health.Value > 0;
         public Position Position { get; }
+        public HashSet<Faction> Factions { get; }
 
-       public Character(Health health, Level level, FighterType fighterType, Position position)
-        { 
+        public Character(Health health, Level level, FighterType fighterType, Position position)
+        {
             Health = health;
             Level = level;
             FighterType = fighterType;
             Position = position;
+            Factions = new HashSet<Faction>();
+        }
+
+        public void JoinFaction(Faction faction)
+        {
+            Factions.Add(faction);
+        }
+
+        public void LeaveFaction(Faction faction)
+        {
+            if (Factions.Contains(faction))
+            {
+                Factions.Remove(faction);
+            }
         }
 
         public void Heal(HealingAmount amount)

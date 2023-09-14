@@ -7,14 +7,16 @@ public abstract class HealthModifier
         if (amount < 0) throw new Exception("Specify a positive amount");
         Amount = amount;
         if (direction == Direction.Down)
+        {
             Amount *= -1;
+        }
     }
 
     public int Amount { get; }
 
     public static HealthModifier Healing(int amount) => new ReceiveHealing(amount);
-    public static HealthModifier Damage(int amount) => new TakeDamage(amount);
-    
+    public static HealthModifier Damage(int amount, DamageMagnifier damageMagnifier) => new TakeDamage(amount);
+
     protected enum Direction
     {
         Up,

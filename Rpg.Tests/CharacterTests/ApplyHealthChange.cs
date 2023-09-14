@@ -18,7 +18,7 @@ public class ApplyHealthChange : CharacterTestBase
     {
         var player = new Character();
         
-        player.ApplyHealthChange(HealthModifier.Damage(200));
+        player.ApplyHealthChange(HealthModifier.Damage(200, DamageMagnifier.None));
         
         Assert.Equal(800, player.CurrentHealth);
     }

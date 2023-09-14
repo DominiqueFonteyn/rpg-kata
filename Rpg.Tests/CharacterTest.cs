@@ -1,4 +1,6 @@
-﻿namespace Rpg.Tests
+﻿using System.Reflection;
+
+namespace Rpg.Tests
 {
     public class CharacterTest
     {
@@ -98,7 +100,7 @@
         {
             get
             {
-                if (Health <= 0) return false; 
+                if (Health <= 0) return false;
                 return true;
             }
         }
@@ -107,9 +109,16 @@
         {
             if (this == otherCharacter)
                 throw new Exception();
-            otherCharacter.Health = otherCharacter.Health - ((bool)(Level - otherCharacter.Level >= 5) ? damage / 2:damage) ;
+
+            int damageDealt = damage;
+            if(Level - otherCharacter.Level >= 5) 
+                damageDealt = damage / 2;
+            if (otherCharacter.Level - Level >= 5)
+                damageDealt = (int) Math.Round( damage * 1.5);
+
+            otherCharacter.Health = otherCharacter.Health - damageDealt;
         }
-        
+
         public void Heal(Character self)
         {
             if (this != self)

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Intrinsics.Arm;
+﻿using System.Net.Security;
+using System.Runtime.Intrinsics.Arm;
 using Xunit;
 
 namespace Rpg.Tests
@@ -73,6 +74,8 @@ namespace Rpg.Tests
 
         public void Damage(Character simon, int damage)
         {
+            if (this == simon)
+                throw new Exception();
             simon.Health = simon.Health - damage;
         }
     }

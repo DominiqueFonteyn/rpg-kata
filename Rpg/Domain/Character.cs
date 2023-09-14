@@ -5,25 +5,18 @@ namespace Rpg.Domain
 {
     public class Character
     {
-        public Character()
-            : this(new Health(), new Level())
-        {
-        }
+        public Level Level { get; }
+        public FighterType FighterType { get; }
+        public Health Health { get; private set; }
+        public bool IsAlive => Health.Value > 0;
+        public Position Position { get; }
 
-        public Character(Health health) 
-            : this(health, new Level())
-        {
-        }
-
-        public Character(Level level)
-            : this(new Health(), level)
-        {
-        }
-
-        private Character(Health health, Level level)
-        {
+       public Character(Health health, Level level, FighterType fighterType, Position position)
+        { 
             Health = health;
             Level = level;
+            FighterType = fighterType;
+            Position = position;
         }
 
         public void Heal(HealingAmount amount)
@@ -38,12 +31,19 @@ namespace Rpg.Domain
 
         public void InflictDamage(Character otherCharacter, Damage damage)
         {
-            if (otherCharacter == this)
-                return;
+            if (otherCharacter == this) return;
+            if (!InRangeOf(otherCharacter)) return;
 
             var damageToDeal = DetermineDamageToDeal(otherCharacter, damage);
 
             otherCharacter.SufferDamage(damageToDeal);
+        }
+
+        private bool InRangeOf(Character otherCharacter)
+        {
+            var distance = Position.Value - otherCharacter.Position.Value;
+
+            return distance <= FighterType.Range;
         }
 
         private void SufferDamage(Damage damage)
@@ -76,9 +76,5 @@ namespace Rpg.Domain
         {
             return otherCharacter.Level.ExceedByFiveLevel(Level);
         }
-
-        public bool IsAlive => Health.Value > 0;
-        public Health Health { get; private set;  }
-        public Level Level { get; }
     }
 }

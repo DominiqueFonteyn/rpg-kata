@@ -9,8 +9,8 @@ public class HealingShould
 
     public HealingShould()
     {
-        _characterOne = _characterRepository.TryAddCharacter("characterOne");
-        _characterTwo = _characterRepository.TryAddCharacter("characterTwo");
+        _characterOne = _characterRepository.TryAddCharacter("characterOne", FighterType.Melee, 1);
+        _characterTwo = _characterRepository.TryAddCharacter("characterTwo", FighterType.Melee, 1);
     }
     
     [Fact]
@@ -23,7 +23,7 @@ public class HealingShould
     [Fact]
     public void CharacterCannotHealWhenDead()
     {
-        var deadCharacter = _characterRepository.TryAddCharacter("deadCharacter");
+        var deadCharacter = _characterRepository.TryAddCharacter("deadCharacter", FighterType.Melee, 1);
         _actionService.DoDamage(_characterOne!, deadCharacter!, 10000);
         Assert.Equal(0, deadCharacter!.Health);
         

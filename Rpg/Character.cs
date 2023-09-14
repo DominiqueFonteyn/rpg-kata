@@ -7,20 +7,13 @@ using System.Threading.Tasks;
 
 namespace Rpg
 {
-    public class Character
+    public abstract class Character
     {
-        public string Name { get; set; }
-        public decimal Health { get; set; }
-        public int Level { get; set; }
-        public bool Alive { get; set; }
+        public decimal Health { get; set; } = 1000;
+        public int Level { get; set; } = 1;
+        public bool Alive { get; set; } = true;
 
-        public Character(string name)
-        {
-            Name = name;
-            Health = 1000;
-            Level = 1;
-            Alive = true;
-        }
+        public abstract int Range { get; }
 
         public void DealDamage(Character target, decimal damage)
         {

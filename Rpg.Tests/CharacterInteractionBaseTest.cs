@@ -2,6 +2,6 @@
 
 public class CharacterInteractionBaseTest
 {
-    internal Character someCharacter = new Character("Character1");
-    internal Character otherCharacter = new Character("Character2");
+    internal Character someCharacter = new MeleeCharacter();
+    internal Character otherCharacter = new MeleeCharacter();
 }

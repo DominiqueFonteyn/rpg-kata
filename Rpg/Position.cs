@@ -9,5 +9,6 @@ namespace Rpg
     public class Position
     {
         public int x = 0;
+        public int DistanceTo(Position other) => Math.Abs(x - other.x);
     }
 }

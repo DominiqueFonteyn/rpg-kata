@@ -14,9 +14,8 @@ namespace Rpg
         public bool Alive { get; set; } = true;
         public Position Position { get; set; } = new();
 
-        public abstract int Range { get; }
 
-        private int DistanceToOtherCharacter(Character target) => Math.Abs(Position.x - target.Position.x);
+        public abstract int Range { get; }
 
         public void DealDamage(Character target, decimal damage)
         {
@@ -24,7 +23,7 @@ namespace Rpg
                 throw new ArgumentException("negative damage");
             if (target == this)
                 throw new ArgumentException("Can't damage to itself");
-            if (DistanceToOtherCharacter(target) > Range)
+            if (Position.DistanceTo(target.Position) > Range)
                 throw new TargetOutOfRangeException();
             if (target.Level - Level >= 5)
                 damage = damage / 2;

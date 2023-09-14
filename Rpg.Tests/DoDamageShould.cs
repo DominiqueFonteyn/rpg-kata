@@ -3,28 +3,58 @@
 public class DoDamageShould
 {
     [Fact]
-    public void SubstractFromHealth()
+    public void SubstractFromVictimsHealth()
     {
-        var character = new Character();
-        var initialHealth = character.Health;
+        var hunter = new Character();
+        var victim = new Character();
+        var initialHealth = victim.Health;
         var damage = 1;
         
-        character.DoDamage(damage);
+        hunter.DoDamage(victim, damage);
         
-        Assert.Equal(initialHealth-damage, character.Health);
+        Assert.Equal(initialHealth-damage, victim.Health);
     }
 
     [Theory]
     [InlineData(true, 999)]
     [InlineData(false, 1001)]
     [InlineData(false, 10001)]
-    public void KillCharacter_WhenHealthBelowOne(bool stillAlive, int damage)
+    public void KillVictim_WhenHealthBelowOne(bool stillAlive, int damage)
     {
-        var character = new Character();
+        var hunter = new Character();
+        var victim = new Character();
         
-        character.DoDamage(damage);
+        hunter.DoDamage(victim, damage);
         
-        Assert.Equal(stillAlive, character.IsAlive);
+        Assert.Equal(stillAlive, victim.IsAlive);
+    }
+
+    [Fact]
+    public void DamageSomebodyElse()
+    {
+        var hunter = new Character();
+        var victim = new Character();
+        var damage = 100;
+        var initialhunterHealth = 600;
+
+        hunter.Health = initialhunterHealth;
+        
+        hunter.DoDamage(victim, damage);
+        
+        Assert.Equal(900, victim.Health);
+        Assert.Equal(initialhunterHealth, hunter.Health);
+        
+    }
+
+    [Fact]
+    public void NotDamageItself()
+    {
+        var hunter = new Character();
+        var damage = 100;
+        
+        hunter.DoDamage(hunter, damage);
+        
+        Assert.Equal(1000, hunter.Health);
     }
 
 }

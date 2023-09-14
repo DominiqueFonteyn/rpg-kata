@@ -6,10 +6,12 @@ public class Character
     public int Level => 1;
     public bool IsAlive { get; set; } = true;
 
-    public void DoDamage(int damage)
+    public void DoDamage(Character victim, int damage)
     {
-        Health -= damage;
-        if (Health <= 0) IsAlive = false;
+        if (victim.Equals(this))
+            return;
+        victim.Health -= damage;
+        if (victim.Health <= 0) victim.IsAlive = false;
     }
 
     public void Heal(Character character)

@@ -48,13 +48,23 @@ public class CharacterTests
     }
 
     [Fact]
+    public void Heal_WhenHealingNegativeAmount_ThrowException()
+    {
+        var character = new Character();
+        
+        void Act() => character.HealSelf(-10);
+
+        Assert.Throws<ApplicationException>(Act);
+    }
+    
+    [Fact]
     public void Heal_WhenCharacterIsHealed_IncreaseHealth()
     {
         var character = new Character();
         var startingHealth = character.Health;
         character.TakeDamage(1);
 
-        character.Heal(1);
+        character.HealSelf(1);
         
         Assert.Equal(character.Health, startingHealth);
     }
@@ -65,7 +75,7 @@ public class CharacterTests
         var character = new Character();
         character.TakeDamage(character.Health);
         
-        character.Heal(1);
+        character.HealSelf(1);
         
         Assert.False(character.Alive);
     }
@@ -76,7 +86,7 @@ public class CharacterTests
         var character = new Character();
         character.TakeDamage(1);
         
-        character.Heal(10);
+        character.HealSelf(10);
         
         Assert.Equal(1000, character.Health);
     }
@@ -101,5 +111,47 @@ public class CharacterTests
         character.Attack(character, 100);
         
         Assert.Equal(startingHealth, character.Health);
+    }
+
+    [Fact]
+    public void DealDamage_WhenTargetLevelIs5OrHigherlevelThanAttacker_ReduceDamage()
+    {
+        var attacker = new Character();
+        var target = new Character(6);
+        var intendedDamage = 100;
+        var startingHealth = target.Health;
+        
+        attacker.Attack(target, intendedDamage);
+
+        var actualDamage = intendedDamage / 2;
+        Assert.Equal(startingHealth - actualDamage, target.Health);
+    }
+    
+    [Fact]
+    public void DealDamage_WhenTargetLevelIs5OrHigherlevelThanAttacker_ReduceDamageRoundedDown()
+    {
+        var attacker = new Character();
+        var target = new Character(6);
+        var intendedDamage = 99;
+        var startingHealth = target.Health;
+        
+        attacker.Attack(target, intendedDamage);
+
+        var actualDamage = (int) Math.Floor((decimal)intendedDamage / 2);
+        Assert.Equal(startingHealth - actualDamage, target.Health);
+    }
+    
+    [Fact]
+    public void DealDamage_WhenAttackerLevelIs5OrHigherlevelThanTarget_increaseDamageRoundedDown()
+    {
+        var attacker = new Character(6);
+        var target = new Character();
+        var intendedDamage = 100;
+        var startingHealth = target.Health;
+        
+        attacker.Attack(target, intendedDamage);
+
+        var actualDamage = (int) Math.Floor(intendedDamage* 1.5m) ;
+        Assert.Equal(startingHealth - actualDamage, target.Health);
     }
 }

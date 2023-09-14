@@ -41,18 +41,7 @@ namespace Rpg.Domain
             if (otherCharacter == this)
                 return;
 
-            var attackerTooWeak = Level.ExceedByFiveLevel(otherCharacter.Level);
-            var attackerTooStrong = otherCharacter.Level.ExceedByFiveLevel(Level);
-
-            var damageToDeal = damage;
-            if (attackerTooWeak)
-            {
-                damageToDeal = damage.HalfDamage;
-            }
-            else if (attackerTooStrong)
-            {
-                damageToDeal = damage.IncreasedDamage;
-            }
+            var damageToDeal = DetermineDamageToDeal(otherCharacter, damage);
 
             otherCharacter.SufferDamage(damageToDeal);
         }
@@ -60,6 +49,32 @@ namespace Rpg.Domain
         private void SufferDamage(Damage damage)
         {
             Health = Health.InflictDamage(damage);
+        }
+
+        private Damage DetermineDamageToDeal(Character otherCharacter, Damage damage)
+        {
+            var damageToDeal = damage;
+
+            if (IsMuchWeaker(otherCharacter))
+            {
+                damageToDeal = damage.HalfDamage;
+            }
+            else if (IsMuchStronger(otherCharacter))
+            {
+                damageToDeal = damage.IncreasedDamage;
+            }
+
+            return damageToDeal;
+        }
+
+        private bool IsMuchWeaker(Character otherCharacter)
+        {
+            return Level.ExceedByFiveLevel(otherCharacter.Level);
+        }
+
+        private bool IsMuchStronger(Character otherCharacter)
+        {
+            return otherCharacter.Level.ExceedByFiveLevel(Level);
         }
 
         public bool IsAlive => Health.Value > 0;

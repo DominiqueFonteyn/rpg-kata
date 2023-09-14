@@ -17,9 +17,10 @@ public class Character
 
     public void TakeDamage(int damage)
     {
-        Health = Health - damage < 0
+        var healthAfterDamage = Health - damage; 
+        Health = healthAfterDamage < 0
             ? 0
-            : Health - damage;
+            : healthAfterDamage;
     }
 
     public void Heal(int healingAmount)
@@ -29,8 +30,9 @@ public class Character
             return;
         }
 
-        Health = Health + healingAmount > StartingHealth 
+        var healthAfterHealing = Health + healingAmount;
+        Health = healthAfterHealing > StartingHealth 
             ? StartingHealth
-            : Health + healingAmount; 
+            : healthAfterHealing; 
     }
 }

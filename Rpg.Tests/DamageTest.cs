@@ -38,5 +38,14 @@ namespace Rpg.Tests
             Assert.IsType<ArgumentException>(ex);
             Assert.Equal("negative damage", ex.Message);
         }
+
+        [Fact]
+        public void ThrowArgException_WhenTryToDamageItself()
+        {
+            
+            var ex = Record.Exception(() => someCharacter.DealDamage(someCharacter, 1));
+            Assert.IsType<ArgumentException>(ex);
+            Assert.Equal("Can't damage to itself", ex.Message);
+        }
     }
 }

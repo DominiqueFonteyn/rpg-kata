@@ -25,6 +25,9 @@ namespace Rpg
         {
             if (damage < 0)
                 throw new ArgumentException("negative damage");
+            if (target == this)
+                throw new ArgumentException("Can't damage to itself");
+
             target.Health -= damage;
             if (target.Health < 0)
             {

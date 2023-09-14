@@ -1,34 +1,34 @@
-﻿namespace Rpg.Tests;
+﻿namespace Rpg.Tests.ActionTests;
 
-public class ActionTests
+public class DoDamageShould
 {
     private readonly ActionService _actionService = new();
     private readonly CharacterRepository _characterRepository = new();
     private Character? _characterOne;
     private Character? _characterTwo;
 
-    public ActionTests()
+    public DoDamageShould()
     {
         _characterOne = _characterRepository.TryAddCharacter("characterOne");
         _characterTwo = _characterRepository.TryAddCharacter("characterTwo");
     }
 
     [Fact]
-    public void DoingDamageShouldReduceHealthToTargetPlayerByAmount()
+    public void ReduceHealthToTargetPlayerByAmount()
     {
         _actionService.DoDamage(_characterOne!, _characterTwo!, 500);
         Assert.Equal(500, _characterTwo!.Health);
     }
 
     [Fact]
-    public void DoingDamageShouldReduceHealthToLessThan0()
+    public void ReduceHealthToLessThan0()
     {
         _actionService.DoDamage(_characterOne!, _characterTwo!, 5000);
         Assert.Equal(0, _characterTwo!.Health);
     }
     
     [Fact]
-    public void DoingDamageToCharacter5LevelsLowerWillIncreaseDamageByhalf()
+    public void ToCharacter5LevelsLower_WillIncreaseDamageByhalf()
     {
         var highLevelCharacter = _characterRepository.TryAddCharacter("highLevelCharacter");
         _characterRepository.IncreaseLevel(highLevelCharacter!, 10);
@@ -40,7 +40,7 @@ public class ActionTests
     }
     
     [Fact]
-    public void DoingDamageToCharacter5LevelsHigherWillDecreaseDamageByhalf()
+    public void ToCharacter5LevelsHigher_WillDecreaseDamageByhalf()
     {
         var highLevelCharacter = _characterRepository.TryAddCharacter("highLevelCharacter");
         _characterRepository.IncreaseLevel(highLevelCharacter!, 10);
@@ -52,33 +52,9 @@ public class ActionTests
     }
 
     [Fact]
-    public void DoingDamageCannotDoDamageToSelf()
+    public void NotDoDamageToSelf()
     {
         _actionService.DoDamage(_characterOne!, _characterOne!, 500);
         Assert.Equal(1000, _characterOne.Health);
-    }
-    
-    [Fact]
-    public void CharacterCannotHealPast1000()
-    {
-        _actionService.HealCharacter(_characterOne!, 5000);
-        Assert.Equal(1000, _characterOne!.Health);
-    }
-    
-    [Fact]
-    public void CharacterCannotHealWhenDead()
-    {
-        var deadCharacter = _characterRepository.TryAddCharacter("deadCharacter");
-        _actionService.DoDamage(_characterOne!, deadCharacter!, 10000);
-        Assert.Equal(0, deadCharacter!.Health);
-        
-        _actionService.HealCharacter(deadCharacter!, 500);
-        Assert.Equal(0, deadCharacter!.Health);
-    }
-
-    [Fact]
-    public void CharacterCanOnlyHealSelf()
-    {
-        Assert.True(true);
     }
 }

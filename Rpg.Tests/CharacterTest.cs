@@ -1,9 +1,4 @@
-﻿using NSubstitute.ExceptionExtensions;
-using System.Net.Security;
-using System.Runtime.Intrinsics.Arm;
-using Xunit;
-
-namespace Rpg.Tests
+﻿namespace Rpg.Tests
 {
     public class CharacterTest
     {
@@ -59,15 +54,19 @@ namespace Rpg.Tests
 
             Assert.Throws<Exception>(Act);
         }
+
         [Fact]
         public void TestACharacterCanOnlySelfHeal()
         {
             var simon = new Character();
             var ole = new Character();
+
             var Act = () => simon.Heal(ole);
+
             Assert.Throws<Exception>(Act);
         }
     }
+
     public class Character
     {
         public int Health { get; protected set; } = 1000;
@@ -81,15 +80,18 @@ namespace Rpg.Tests
             }
         }
 
-        public void Damage(Character simon, int damage)
+        public void Damage(Character otherCharacter, int damage)
         {
-            if (this == simon)
+            if (this == otherCharacter)
                 throw new Exception();
-            simon.Health = simon.Health - damage;
+            otherCharacter.Health = otherCharacter.Health - damage;
         }
-        public void Heal(Character simon)
+
+        public void Heal(Character self)
         {
-            simon.Health = 1000;
+            if (this != self)
+                throw new Exception();
+
         }
     }
 }

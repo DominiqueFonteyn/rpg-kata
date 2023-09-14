@@ -105,19 +105,25 @@ namespace Rpg.Tests
             }
         }
 
-        public void Damage(Character otherCharacter, int damage)
+        public void Damage(Character target, int damage)
         {
-            if (this == otherCharacter)
+            if (this == target)
                 throw new Exception();
 
             int damageDealt = damage;
-            if(Level - otherCharacter.Level >= 5) 
+            if (HasDecreasedDamage(target))
                 damageDealt = damage / 2;
-            if (otherCharacter.Level - Level >= 5)
-                damageDealt = (int) Math.Round( damage * 1.5);
+            if (HasIncreasedDamage(target))
+                damageDealt = (int)Math.Round(damage * 1.5);
 
-            otherCharacter.Health = otherCharacter.Health - damageDealt;
+            target.Health = target.Health - damageDealt;
         }
+
+        private bool HasIncreasedDamage(Character target)
+        => target.Level - Level >= 5;
+
+        private bool HasDecreasedDamage(Character target)
+        => Level - target.Level >= 5;
 
         public void Heal(Character self)
         {

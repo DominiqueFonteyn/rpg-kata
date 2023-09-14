@@ -27,6 +27,17 @@ namespace Rpg.Tests
 
             Assert.True(character.IsAlive);
         }
+
+        [Fact]
+        public void Damage_10_Health990()
+        {
+            var ole = new Character();
+            var simon = new Character();
+
+            ole.Damage(simon, 10);
+
+            Assert.Equal(990, simon.Health);
+        }
     }
 
     public class Character
@@ -35,5 +46,10 @@ namespace Rpg.Tests
         public int Health { get; } = 1000;
         public int Level { get; } = 1;
         public bool IsAlive { get; } = true;
+
+        public void Damage(Character simon, int damage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

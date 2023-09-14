@@ -14,7 +14,7 @@ public class HealthModifierTests
     [Fact]
     public void Damage_ReturnsTakeDamage()
     {
-        var result = HealthModifier.Healing(500);
+        var result = HealthModifier.Damage(500);
 
         Assert.IsType<TakeDamage>(result);
         Assert.Equal(-500, result.Amount);

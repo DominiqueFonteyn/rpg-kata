@@ -21,6 +21,11 @@ public class CharacterRepository
         return character;
     }
 
+    public void IncreaseLevel(Character character, int amount)
+    {
+        character.Level += amount;
+    }
+
     public Character? GetCharacter(string name) =>
         _characters.FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
 }

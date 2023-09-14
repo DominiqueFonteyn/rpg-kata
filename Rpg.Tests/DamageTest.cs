@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Rpg.Tests
 {
-    public class DamageTest
+    public class DamageTest : CharacterInteractionBaseTest
     {
-        private Character someCharacter = new Character("Character1");
-        private Character otherCharacter = new Character("Character2");
-
         [Fact]
         public void DamageSubstracted_Succeed()
         {

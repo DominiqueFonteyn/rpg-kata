@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Rpg.Tests
 {
-    public class HealTest
+    public class HealTest : CharacterInteractionBaseTest
     {
-        private Character someCharacter = new Character("Character1");
-        private Character otherCharacter = new Character("Character2");
 
         [Fact]
         public void Exception_CharacterDead()

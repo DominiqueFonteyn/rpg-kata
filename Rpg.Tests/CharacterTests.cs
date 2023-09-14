@@ -17,4 +17,12 @@ public class CharacterTests
         
         Assert.Equal(1, character.Level);
     }
+
+    [Fact]
+    public void CreatedCharacter_IsAlive()
+    {
+        var character = new Character();
+        
+        Assert.True(character.IsAlive);
+    }
 }

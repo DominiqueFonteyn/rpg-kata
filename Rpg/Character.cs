@@ -1,18 +1,5 @@
 namespace Rpg;
 
-public abstract class GameObject
-{
-    protected virtual bool CanBeDamaged => true;
-    protected abstract bool CanBeHealed { get; }
-    protected abstract bool CanDealDamage { get; }
-}
-
-public class Prop : GameObject
-{
-    protected override bool CanBeHealed => false;
-    protected override bool CanDealDamage => false;
-}
-
 public class Character : GameObject, ITakeDamage, IReceiveHealing
 {
     private const int MinimumHealth = 0;
@@ -21,13 +8,11 @@ public class Character : GameObject, ITakeDamage, IReceiveHealing
     protected override bool CanBeHealed => true;
     protected override bool CanDealDamage => true;
 
-    public Character()
+    public Character() : base(MaximumHealth)
     {
-        CurrentHealth = MaximumHealth;
         Level = 1;
     }
 
-    public decimal CurrentHealth { get; private set; }
     public int Level { get; }
     public CharacterStatus Status { get; private set; }
 

@@ -14,5 +14,10 @@ public struct Level
     {
     }
 
+    public bool ExceedByFiveLevel(Level otherLevel)
+    {
+        return (Value + 5 <= otherLevel.Value);
+    }
+
     public int Value { get; set; }
 }

@@ -6,14 +6,24 @@ namespace Rpg.Domain
     public class Character
     {
         public Character()
+            : this(new Health(), new Level())
         {
-            Health = new Health();
-            Level = new Level();
         }
 
-        public Character(Health health)
+        public Character(Health health) 
+            : this(health, new Level())
+        {
+        }
+
+        public Character(Level level)
+            : this(new Health(), level)
+        {
+        }
+
+        private Character(Health health, Level level)
         {
             Health = health;
+            Level = level;
         }
 
         public void Heal(HealingAmount amount)
@@ -30,7 +40,21 @@ namespace Rpg.Domain
         {
             if (otherCharacter == this)
                 return;
-            otherCharacter.SufferDamage(damage);
+
+            var attackerTooWeak = Level.ExceedByFiveLevel(otherCharacter.Level);
+            var attackerTooStrong = otherCharacter.Level.ExceedByFiveLevel(Level);
+
+            var damageToDeal = damage;
+            if (attackerTooWeak)
+            {
+                damageToDeal = damage.HalfDamage;
+            }
+            else if (attackerTooStrong)
+            {
+                damageToDeal = damage.IncreasedDamage;
+            }
+
+            otherCharacter.SufferDamage(damageToDeal);
         }
 
         private void SufferDamage(Damage damage)

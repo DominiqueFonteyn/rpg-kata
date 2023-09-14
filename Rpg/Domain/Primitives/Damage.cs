@@ -7,5 +7,8 @@ public struct Damage
         Value = value;
     }
 
+    public Damage HalfDamage => new Damage(Value / 2);
+    public Damage IncreasedDamage => new Damage((int) Math.Round(Value * 1.5m));
+
     public int Value { get; set; }
 }

@@ -96,13 +96,24 @@ namespace Rpg.Tests.Domain
         [Fact]
         public void WhenDamagingAFighterWith5LevelsAboveMyDamageIsReducedBy50Percent()
         {
-            var character = new Character();
+            var strongCharacter = new Character(new Level(6));
+            var weakCharacter = new Character(new Level(1));
 
-            character.InflictDamage(character, new Damage(200));
+            weakCharacter.InflictDamage(strongCharacter, new Damage(200));
 
-            Assert.Equal(new Health(Health.MaxHealth), character.Health);
-
+            Assert.Equal(new Health(900), strongCharacter.Health);
         }
 
+        [Fact]
+        public void WhenDamagingAFighterWith5LevelsBelow_DamageIsIncreasedBy50Percent()
+        {
+            var strongCharacter = new Character(new Level(6));
+            var weakCharacter = new Character(new Level(1));
+
+            strongCharacter.InflictDamage(weakCharacter, new Damage(200));
+
+            Assert.Equal(new Health(700), weakCharacter.Health);
+
+        }
     }
 }

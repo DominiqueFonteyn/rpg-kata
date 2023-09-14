@@ -11,4 +11,11 @@ public class Character
         Health -= damage;
         if (Health <= 0) IsAlive = false;
     }
+
+    public void Heal(Character character)
+    {
+        var healedValue = 500;
+        
+        character.Health += healedValue;
+    }
 }

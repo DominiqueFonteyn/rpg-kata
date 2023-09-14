@@ -3,7 +3,7 @@
 public class Character
 {
     public int Health { get; set; } = 1000;
-    public int Level  => 1;
+    public int Level => 1;
     public bool IsAlive { get; set; } = true;
 
     public void DoDamage(int damage)
@@ -15,7 +15,10 @@ public class Character
     public void Heal(Character character)
     {
         var healedValue = 500;
-        
-        character.Health += healedValue;
+        if (character.IsAlive)
+        {
+            character.Health += healedValue;
+            if (character.Health > 1000) character.Health = 1000;
+        }
     }
 }

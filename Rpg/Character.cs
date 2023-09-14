@@ -21,5 +21,17 @@ namespace Rpg
             Alive = true;
         }
 
+        public void DealDamage(Character target, int damage)
+        {
+            if (damage < 0)
+                throw new ArgumentException("negative damage");
+            target.Health -= damage;
+            if (target.Health < 0)
+            {
+                target.Health = 0;
+                target.Alive = false;
+            }
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Runtime.Intrinsics.Arm;
+using Xunit;
 
 namespace Rpg.Tests
 {
@@ -38,18 +39,25 @@ namespace Rpg.Tests
 
             Assert.Equal(990, simon.Health);
         }
+        [Fact]
+        public void TestKill()
+        {
+            var simon = new Character();
+            var ole = new Character();
+            simon.Damage(ole, ole.Health + 10);
+            Assert.False(ole.IsAlive);
+        }
     }
-
     public class Character
     {
 
-        public int Health { get; } = 1000;
-        public int Level { get; } = 1;
-        public bool IsAlive { get; } = true;
+        public int Health { get; protected set; } = 1000;
+        public int Level { get; protected set; } = 1;
+        public bool IsAlive { get; protected set; } = true;
 
         public void Damage(Character simon, int damage)
         {
-            throw new NotImplementedException();
+            simon.Health = simon.Health-damage;
         }
     }
 }

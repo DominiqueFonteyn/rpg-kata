@@ -9,8 +9,10 @@ public class Character
     {
         Health = StartingHealth;
         Level = StartingLevel;
+        Id = Guid.NewGuid();
     }
 
+    public Guid Id { get; }
     public int Health { get; private set; }
     public int Level { get; private set; }
     public bool Alive => Health > 0;
@@ -31,5 +33,11 @@ public class Character
         Health = healthAfterHealing > StartingHealth 
             ? StartingHealth
             : healthAfterHealing; 
+    }
+
+    public void Attack(Character target, int damage)
+    {
+        if (Id != target.Id)
+            target.TakeDamage(damage);
     }
 }

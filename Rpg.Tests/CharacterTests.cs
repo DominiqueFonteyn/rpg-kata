@@ -80,4 +80,26 @@ public class CharacterTests
         
         Assert.Equal(1000, character.Health);
     }
+
+    [Fact]
+    public void DealDamage_ACharacterDealsDamage()
+    {
+        var character1 = new Character();
+        var character2 = new Character();
+
+        character1.Attack(character2, 100);
+        
+        Assert.Equal(900, character2.Health);
+    }
+
+    [Fact]
+    public void DealDamage_ACharacterCannotDamageItself()
+    {
+        var character = new Character();
+        var startingHealth = character.Health;
+
+        character.Attack(character, 100);
+        
+        Assert.Equal(startingHealth, character.Health);
+    }
 }

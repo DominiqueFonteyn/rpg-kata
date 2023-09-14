@@ -63,5 +63,23 @@ namespace Rpg.Tests
             someCharacter.DealDamage(otherCharacter, 5);
             Assert.Equal(992.5m, otherCharacter.Health );
         }
+
+        [Fact]
+        public void LevelMoreThan5Greater_RawDamageDoesntKill()
+        {
+            otherCharacter.Level = 6;
+            someCharacter.DealDamage(otherCharacter, 1001);
+            Assert.True(otherCharacter.Alive);
+            Assert.Equal(499.5m, otherCharacter.Health);
+        }
+
+        [Fact]
+        public void LevelMoreThan5Below_AddedDamageKills()
+        {
+            someCharacter.Level = 6;
+            someCharacter.DealDamage(otherCharacter, 667);
+            Assert.False(otherCharacter.Alive);
+            Assert.Equal(0, otherCharacter.Health);
+        }
     }
 }

@@ -21,6 +21,14 @@ public class CharacterTests
         
         Assert.Equal(1, character.Level);
     }
+
+    [Fact]
+    public void WhenCreatingACharacter_ItIsAlive()
+    {
+        var character = new Character();
+        
+        Assert.True(character.Alive);
+    }
 }
 
 public class Character
@@ -35,4 +43,5 @@ public class Character
 
     public int Health { get; private set; }
     public int Level { get; private set; }
+    public bool Alive => Health > 0;
 }

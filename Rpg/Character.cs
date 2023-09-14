@@ -25,10 +25,7 @@ public class Character
 
     public void Heal(int healingAmount)
     {
-        if (!Alive)
-        {
-            return;
-        }
+        if (!Alive) return;
 
         var healthAfterHealing = Health + healingAmount;
         Health = healthAfterHealing > StartingHealth 

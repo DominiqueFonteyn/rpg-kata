@@ -91,7 +91,25 @@ namespace Rpg.Tests
 
 
         }
+
+        [Fact]
+        public void MeleeFighterHasRangeOf2Meters()
+        {
+            var fighter = new MeleeFighter();
+
+            Assert.Equal(2, fighter.Range);
+        }
     }
+
+    internal class MeleeFighter
+    {
+        public MeleeFighter()
+        {
+        }
+
+        public int Range { get; }
+    }
+
     public class Character
     {
         public int Health { get; protected set; } = 1000;

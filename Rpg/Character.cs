@@ -38,6 +38,8 @@ namespace Rpg
 
         public void Heal(Character target, int amount)
         {
+            if(target != this)
+                 throw new ArgumentException("Cannot heal other character");
             if (!target.Alive)
                 throw new ArgumentException("dead");
             if (amount < 0)

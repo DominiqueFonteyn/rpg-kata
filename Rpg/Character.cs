@@ -1,9 +1,25 @@
 namespace Rpg;
 
-public class Character : ITakeDamage, IReceiveHealing
+public abstract class GameObject
+{
+    protected virtual bool CanBeDamaged => true;
+    protected abstract bool CanBeHealed { get; }
+    protected abstract bool CanDealDamage { get; }
+}
+
+public class Prop : GameObject
+{
+    protected override bool CanBeHealed => false;
+    protected override bool CanDealDamage => false;
+}
+
+public class Character : GameObject, ITakeDamage, IReceiveHealing
 {
     private const int MinimumHealth = 0;
     private const int MaximumHealth = 1000;
+    
+    protected override bool CanBeHealed => true;
+    protected override bool CanDealDamage => true;
 
     public Character()
     {
@@ -34,8 +50,13 @@ public class Character : ITakeDamage, IReceiveHealing
         if (ExceedsMinimumHealth())
         {
             CurrentHealth = MinimumHealth;
-            Status = CharacterStatus.Dead;
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        Status = CanBeHealed ? CharacterStatus.Dead : CharacterStatus.Destroyed;
     }
 
     public void ApplyHealthChange(HealthModifier modifier)

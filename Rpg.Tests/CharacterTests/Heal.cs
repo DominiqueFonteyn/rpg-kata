@@ -7,13 +7,12 @@ public class Heal : CharacterTestBase
     [Fact]
     public void CallsIsDead()
     {
-        var player = new Character();
-        var target = Substitute.For<IReceiveHealing>();
-        target.IsDead.Returns(false);
+        var player = Substitute.ForPartsOf<Character>();
+        player.IsDead.Returns(false);
 
-        player.Heal(target, 500);
+        player.Heal(player, 500);
 
-        _ = target
+        _ = player
             .Received(1)
             .IsDead;
     }
@@ -22,13 +21,12 @@ public class Heal : CharacterTestBase
     public void TargetNotDead_CallsReceiveHealing()
     {
         const int health = 300;
-        var player = new Character();
-        var target = Substitute.For<IReceiveHealing>();
-        target.IsDead.Returns(false);
+        var player = Substitute.ForPartsOf<Character>();
+        player.IsDead.Returns(false);
 
-        player.Heal(target, health);
+        player.Heal(player, health);
 
-        target
+        player
             .Received(1)
             .ReceiveHealing(health);
     }
@@ -36,14 +34,23 @@ public class Heal : CharacterTestBase
     [Fact]
     public void TargetDead_DoesNotCallReceiveHealing()
     {
-        var player = new Character();
-        var target = Substitute.For<IReceiveHealing>();
-        target.IsDead.Returns(true);
+        var player = Substitute.ForPartsOf<Character>();
+        player.IsDead.Returns(true);
 
-        player.Heal(target, 500);
+        player.Heal(player, 500);
 
-        target
+        player
             .DidNotReceive()
             .ReceiveHealing(Arg.Any<int>());
+    }
+
+    [Fact]
+    public void OnlyHealsWhenSelf()
+    {
+        var player = Substitute.ForPartsOf<Character>();
+        
+        player.Heal(player, 500);
+
+        Assert.Empty(player.ReceivedCalls());
     }
 }

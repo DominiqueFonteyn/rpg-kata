@@ -15,9 +15,9 @@ public class Character : ITakeDamage, IReceiveHealing
     public int Level { get; }
     public CharacterStatus Status { get; private set; }
 
-    public bool IsDead => Status == CharacterStatus.Dead;
+    public virtual bool IsDead => Status == CharacterStatus.Dead;
 
-    public void ReceiveHealing(int health)
+    public virtual void ReceiveHealing(int health)
     {
         CurrentHealth += health;
 
@@ -38,6 +38,11 @@ public class Character : ITakeDamage, IReceiveHealing
         }
     }
 
+    public void ApplyHealthChange(HealthModifier modifier)
+    {
+        CurrentHealth += modifier.Amount;
+    }
+
     public virtual void Damage(ITakeDamage target, int damage)
     {
         if (IsSelf(target))
@@ -48,9 +53,11 @@ public class Character : ITakeDamage, IReceiveHealing
         target.TakeDamage(damage);
     }
 
-    public void Heal(IReceiveHealing target, int health)
+    public virtual void Heal(IReceiveHealing target, int health)
     {
+        if (!IsSelf(target)) return;
         if (target.IsDead) return;
+
 
         target.ReceiveHealing(health);
     }
@@ -66,6 +73,11 @@ public class Character : ITakeDamage, IReceiveHealing
     }
 
     private bool IsSelf(ITakeDamage target)
+    {
+        return target == this;
+    }
+
+    private bool IsSelf(IReceiveHealing target)
     {
         return target == this;
     }

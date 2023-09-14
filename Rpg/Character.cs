@@ -14,6 +14,7 @@ namespace Rpg
         public bool Alive { get; set; } = true;
         public Position Position { get; set; } = new();
 
+        public HashSet<string> Factions { get; set; } = new HashSet<string>();
 
         public abstract int Range { get; }
 
@@ -49,6 +50,16 @@ namespace Rpg
             target.Health += amount;
             if (target.Health > 1000)
                 target.Health = 1000;
+        }
+
+        public void JoinFactions(string newFaction)
+        {
+            Factions.Add(newFaction);
+        }
+
+        public void LeaveFactions(string faction)
+        {
+            Factions.Remove(faction);
         }
     }
 }

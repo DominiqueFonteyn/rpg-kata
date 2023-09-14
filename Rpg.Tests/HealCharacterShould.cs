@@ -2,28 +2,18 @@
 
 public class HealCharacterShould
 {
-    [Fact]
-    public void IncreaseHealthOfThePassedCharacter()
-    {
-        var character = new Character();
-        var healingCharacter = new Character();
-
-        character.Health = 400;
-        
-        healingCharacter.Heal(character);
-
-        Assert.Equal(900, character.Health);
-    }
 
     [Fact]
     public void HealCharacter_NoMoreThanMaxHealth()
     {
-        var character = new Character();
-        var healingCharacter = new Character();
+        var character = new Character()
+        {
+            Health = 10
+        };
+        
+        character.Heal();
 
-        healingCharacter.Heal(character);
-
-        Assert.Equal(1000, character.Health);
+        Assert.Equal(510, character.Health);
     }
     
     [Fact]
@@ -34,11 +24,23 @@ public class HealCharacterShould
             IsAlive = false,
             Health = 0
         };
-        var healingCharacter = new Character();
 
-        healingCharacter.Heal(character);
+        character.Heal();
 
         Assert.Equal(0, character.Health);
+    }
+
+    [Fact]
+    public void OnlyHealItself()
+    {
+        var character = new Character()
+        {
+            Health = 100
+        };
+
+        character.Heal();
+
+        Assert.Equal(600, character.Health);
     }
     
 }

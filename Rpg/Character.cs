@@ -14,13 +14,13 @@ public class Character
         if (victim.Health <= 0) victim.IsAlive = false;
     }
 
-    public void Heal(Character character)
+    public void Heal()
     {
         var healedValue = 500;
-        if (character.IsAlive)
+        if (IsAlive)
         {
-            character.Health += healedValue;
-            if (character.Health > 1000) character.Health = 1000;
+            Health += healedValue;
+            if (Health > 1000) Health = 1000;
         }
     }
 }

@@ -53,11 +53,18 @@ namespace Rpg.Tests
 
         public int Health { get; protected set; } = 1000;
         public int Level { get; protected set; } = 1;
-        public bool IsAlive { get; protected set; } = true;
+        public bool IsAlive
+        {
+            get
+            {
+                if (Health <= 0) return false; 
+                return true;
+            }
+        }
 
         public void Damage(Character simon, int damage)
         {
-            simon.Health = simon.Health-damage;
+            simon.Health = simon.Health - damage;
         }
     }
 }

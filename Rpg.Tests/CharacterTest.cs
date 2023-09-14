@@ -65,6 +65,18 @@
 
             Assert.Throws<Exception>(Act);
         }
+
+        [Fact]
+        public void Damage_OtherIs5LevelsBelowSelf_ReducedBy50Percent()
+        {
+            var simon = new Character();
+            var ole = new Character();
+
+            ole.LevelUp(5);
+            ole.Damage(simon, 100);
+
+            Assert.Equal(950, simon.Health);
+        }
     }
 
     public class Character
@@ -92,6 +104,11 @@
             if (this != self)
                 throw new Exception();
 
+        }
+
+        public void LevelUp(int levelAmount)
+        {
+            Level += levelAmount;
         }
     }
 }

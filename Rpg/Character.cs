@@ -33,5 +33,15 @@ namespace Rpg
             }
         }
 
+        public void Heal(Character target, int amount)
+        {
+            if (!target.Alive)
+                throw new ArgumentException("dead");
+            if (amount < 0)
+                throw new ArgumentException("negative amount");
+            target.Health += amount;
+            if (target.Health > 1000)
+                target.Health = 1000;
+        }
     }
 }

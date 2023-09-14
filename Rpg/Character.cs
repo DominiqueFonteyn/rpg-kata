@@ -8,11 +8,6 @@ public class Character
     public FighterType FighterType { get; set; }
     public int Postion { set; get; }
     public bool IsAlive => Health > 0;
-}
 
-public enum FighterType
-{
-    Melee,
-    Ranged,
+    public List<string> Factions { get; set; } = new();
 }
-

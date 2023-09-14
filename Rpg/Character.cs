@@ -9,7 +9,7 @@ namespace Rpg
     public class Character
     {
         public string Name { get; set; }
-        public int Health { get; set; }
+        public decimal Health { get; set; }
         public int Level { get; set; }
         public bool Alive { get; set; }
 
@@ -21,12 +21,14 @@ namespace Rpg
             Alive = true;
         }
 
-        public void DealDamage(Character target, int damage)
+        public void DealDamage(Character target, decimal damage)
         {
             if (damage < 0)
                 throw new ArgumentException("negative damage");
             if (target == this)
                 throw new ArgumentException("Can't damage to itself");
+            if (target.Level - Level >= 5)
+                damage = damage / 2;
 
             target.Health -= damage;
             if (target.Health < 0)

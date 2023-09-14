@@ -47,5 +47,13 @@ namespace Rpg.Tests
             Assert.IsType<ArgumentException>(ex);
             Assert.Equal("Can't damage to itself", ex.Message);
         }
+
+        [Fact]
+        public void LevelAbove5Level_DamageShouldReduce50_Succed()
+        {
+            otherCharacter.Level = 6;
+            someCharacter.DealDamage(otherCharacter, 5);
+            Assert.Equal(997.5m, otherCharacter.Health );
+        }
     }
 }

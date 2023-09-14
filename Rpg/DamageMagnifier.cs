@@ -15,14 +15,14 @@ public class DamageMagnifier
     public static DamageMagnifier ReduceBy(decimal factor) => new DamageMagnifier(ModifyOperation.Reduce, factor);
     public static DamageMagnifier IncreaseBy(decimal factor) => new DamageMagnifier(ModifyOperation.Increase, factor);
 
-    public int Apply(int currentHealth)
+    public decimal Apply(int currentHealth)
     {
         if (_modifyOperation == ModifyOperation.Increase)
         {
-            return (int)(currentHealth * (1 + _factor));
+            return currentHealth * (1 + _factor);
         }
 
-        return (int)(currentHealth * (1 - _factor));
+        return currentHealth * (1 - _factor);
     }
 
     private enum ModifyOperation

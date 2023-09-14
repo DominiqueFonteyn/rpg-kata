@@ -11,7 +11,7 @@ public class Character : ITakeDamage, IReceiveHealing
         Level = 1;
     }
 
-    public int CurrentHealth { get; private set; }
+    public decimal CurrentHealth { get; private set; }
     public int Level { get; }
     public CharacterStatus Status { get; private set; }
 

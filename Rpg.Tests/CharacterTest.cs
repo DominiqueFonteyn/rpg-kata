@@ -47,10 +47,19 @@ namespace Rpg.Tests
             simon.Damage(ole, ole.Health + 10);
             Assert.False(ole.IsAlive);
         }
+
+        [Fact]
+        public void CannotDealDamageToSelf()
+        {
+            var simon = new Character();
+
+            var Act = () => simon.Damage(simon, 50);
+
+            Assert.Throws<Exception>(Act);
+        }
     }
     public class Character
     {
-
         public int Health { get; protected set; } = 1000;
         public int Level { get; protected set; } = 1;
         public bool IsAlive

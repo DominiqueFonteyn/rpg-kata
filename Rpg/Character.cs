@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace Rpg
                 throw new ArgumentException("Can't damage to itself");
             if (target.Level - Level >= 5)
                 damage = damage / 2;
+            if ( Level - target.Level >= 5)
+                damage = damage + damage/2;
 
             target.Health -= damage;
             if (target.Health < 0)

@@ -55,5 +55,13 @@ namespace Rpg.Tests
             someCharacter.DealDamage(otherCharacter, 5);
             Assert.Equal(997.5m, otherCharacter.Health );
         }
+
+        [Fact]
+        public void LevelBelow5Level_DamageShouldIncrease50_Succed()
+        {
+            someCharacter.Level = 6;
+            someCharacter.DealDamage(otherCharacter, 5);
+            Assert.Equal(992.5m, otherCharacter.Health );
+        }
     }
 }

@@ -16,18 +16,20 @@ namespace Rpg.Domain
             Health = health;
         }
 
-        public void Heal(Character otherCharacter, HealingAmount amount)
+        public void Heal(HealingAmount amount)
         {
-            if (!otherCharacter.IsAlive)
+            if (!IsAlive)
             {
                 throw new CharacterAlreadyDeadException();
             }
 
-            otherCharacter.Health = otherCharacter.Health.Heal(amount);
+            Health = Health.Heal(amount);
         }
 
         public void InflictDamage(Character otherCharacter, Damage damage)
         {
+            if (otherCharacter == this)
+                return;
             otherCharacter.SufferDamage(damage);
         }
 

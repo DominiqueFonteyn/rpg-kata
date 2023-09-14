@@ -56,20 +56,18 @@ namespace Rpg.Tests.Domain
         [Fact]
         public void Heal_WhenDead_CannotBeHealed()
         {
-            var healer = new Character();
             var deadCharacter = new Character(new Health(0));
 
             Assert.Throws<CharacterAlreadyDeadException>(
-                () => healer.Heal(deadCharacter, new HealingAmount(10)));
+                () => deadCharacter.Heal(new HealingAmount(10)));
         }
 
         [Fact]
         public void Heal_WhenAlreadyMaxHealth_CannotBeHealed()
         {
-            var healer = new Character();
             var maxHealthCharacter = new Character(new Health(1000));
 
-            healer.Heal(maxHealthCharacter, new HealingAmount(200));
+            maxHealthCharacter.Heal(new HealingAmount(200));
 
             Assert.Equal(new Health(1000), maxHealthCharacter.Health);
         }
@@ -77,13 +75,34 @@ namespace Rpg.Tests.Domain
         [Fact]
         public void Heal_HealsCharacter()
         {
-            var healer = new Character();
             var damagedCharacter = new Character(new Health(250));
 
-            healer.Heal(damagedCharacter, new HealingAmount(200));
+            damagedCharacter.Heal(new HealingAmount(200));
 
             Assert.Equal(new Health(450), damagedCharacter.Health);
 
         }
+
+        [Fact]
+        public void ACharacterCannotDamageToHimself()
+        {
+            var character = new Character();
+
+            character.InflictDamage(character, new Damage(200));
+
+            Assert.Equal(new Health(Health.MaxHealth), character.Health);
+        }
+
+        [Fact]
+        public void WhenDamagingAFighterWith5LevelsAboveMyDamageIsReducedBy50Percent()
+        {
+            var character = new Character();
+
+            character.InflictDamage(character, new Damage(200));
+
+            Assert.Equal(new Health(Health.MaxHealth), character.Health);
+
+        }
+
     }
 }

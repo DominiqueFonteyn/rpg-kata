@@ -7,22 +7,25 @@ namespace Rpg.Tests
         [Fact]
         public void Health_StartsAt1000()
         {
-            var character = new Character()
-            {
-                Health = 1000,
-            };
+            var character = new Character();
+
             Assert.Equal(1000, character.Health);
         }
-            [Fact]
-            public void LevelStart1()
-            {
-            var character = new Character()
-            {
-                Health = 1000,
-                Level = 1,
-            };
-            Assert.Equal(1, character.Level);
 
+        [Fact]
+        public void LevelStart1()
+        {
+            var character = new Character();
+
+            Assert.Equal(1, character.Level);
+        }
+
+        [Fact]
+        public void StartingAlive()
+        {
+            var character = new Character();
+
+            Assert.True(character.IsAlive);
         }
     }
 
@@ -30,9 +33,12 @@ namespace Rpg.Tests
     {
         public Character()
         {
+            Health = 1000;
+            Level = 1;
         }
 
-        public int Health { get; internal set; }
-        public int Level { get; internal set; }
+        public int Health { get; }
+        public int Level { get; }
+        public bool IsAlive { get; }
     }
 }

@@ -7,8 +7,8 @@ namespace Rpg.Domain
     {
         public Character()
         {
-            Health = new Health(1000);
-            Level = new Level(1);
+            Health = new Health();
+            Level = new Level();
         }
 
         public Character(Health health)
@@ -16,7 +16,7 @@ namespace Rpg.Domain
             Health = health;
         }
 
-        public void Heal(Character otherCharacter, HealthAmount amount)
+        public void Heal(Character otherCharacter, HealingAmount amount)
         {
             if (!otherCharacter.IsAlive)
             {

@@ -1,8 +1,8 @@
 ﻿namespace Rpg.Domain.Primitives;
 
-public struct HealthAmount
+public struct HealingAmount
 {
-    public HealthAmount(int value)
+    public HealingAmount(int value)
     {
         Value = value;
     }

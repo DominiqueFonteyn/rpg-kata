@@ -60,7 +60,7 @@ namespace Rpg.Tests.Domain
             var deadCharacter = new Character(new Health(0));
 
             Assert.Throws<CharacterAlreadyDeadException>(
-                () => healer.Heal(deadCharacter, new HealthAmount(10)));
+                () => healer.Heal(deadCharacter, new HealingAmount(10)));
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Rpg.Tests.Domain
             var healer = new Character();
             var maxHealthCharacter = new Character(new Health(1000));
 
-            healer.Heal(maxHealthCharacter, new HealthAmount(200));
+            healer.Heal(maxHealthCharacter, new HealingAmount(200));
 
             Assert.Equal(new Health(1000), maxHealthCharacter.Health);
         }
@@ -80,7 +80,7 @@ namespace Rpg.Tests.Domain
             var healer = new Character();
             var damagedCharacter = new Character(new Health(250));
 
-            healer.Heal(damagedCharacter, new HealthAmount(200));
+            healer.Heal(damagedCharacter, new HealingAmount(200));
 
             Assert.Equal(new Health(450), damagedCharacter.Health);
 

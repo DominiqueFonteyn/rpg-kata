@@ -2,9 +2,18 @@
 
 public struct Health
 {
+    public const int StartingValue = 1000;
+    public const int MaxHealth = 1000;
+    public const int MinHealth = 0;
+
     public Health(int value)
     {
         Value = value;
+    }
+
+    public Health() 
+        : this (StartingValue)
+    {
     }
 
     public int Value { get; set; }
@@ -13,12 +22,12 @@ public struct Health
     {
         var newHealthValue = Value - damage.Value;
 
-        return newHealthValue < 0 ? new Health(0) : new Health(newHealthValue);
+        return newHealthValue < MinHealth ? new Health(MinHealth) : new Health(newHealthValue);
     }
 
-    public Health Heal(HealthAmount amount)
+    public Health Heal(HealingAmount amount)
     {
         var newHealthValue = Value + amount.Value;
-        return newHealthValue < 1000 ? new Health(newHealthValue) : new Health(1000);
+        return newHealthValue < MaxHealth ? new Health(newHealthValue) : new Health(MaxHealth);
     }
 }

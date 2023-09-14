@@ -99,6 +99,13 @@ namespace Rpg.Tests
 
             Assert.Equal(2, fighter.Range);
         }
+        [Fact]
+        public void RangedFighterHasRangeOf20Meters()
+        {
+            var fighter = new RangedFighter();
+
+            Assert.Equal(20, fighter.Range);
+        }
     }
 
     internal class MeleeFighter
@@ -107,9 +114,16 @@ namespace Rpg.Tests
         {
         }
 
-        public int Range { get; }
+        public int Range { get; } = 2;
     }
+    internal class RangedFighter
+    {
+        public RangedFighter()
+        {
+        }
 
+        public int Range { get; } = 20;
+    }
     public class Character
     {
         public int Health { get; protected set; } = 1000;

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Rpg
 {
-    public class RangedCharacter : Character
+    public class Position
     {
-        public override int Range => 20;
+        public int x = 0;
     }
 }

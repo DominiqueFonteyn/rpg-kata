@@ -11,30 +11,30 @@ namespace Rpg.Tests
         [Fact]
         public void DamageSubstracted_Succeed()
         {
-            someCharacter.DealDamage(otherCharacter, 1);
-            Assert.Equal(999, otherCharacter.Health);
-            Assert.True(otherCharacter.Alive);
+            MeleeCharacter.DealDamage(RangedCharacter, 1);
+            Assert.Equal(999, RangedCharacter.Health);
+            Assert.True(RangedCharacter.Alive);
         }
         [Fact]
         public void DamageKill_Succeed()
         {
-            someCharacter.DealDamage(otherCharacter, 1001);
-            Assert.Equal(0, otherCharacter.Health);
-            Assert.False(otherCharacter.Alive);
+            MeleeCharacter.DealDamage(RangedCharacter, 1001);
+            Assert.Equal(0, RangedCharacter.Health);
+            Assert.False(RangedCharacter.Alive);
         }
 
         [Fact]
         public void ExactDamageAlive_Succeed()
         {
-            someCharacter.DealDamage(otherCharacter, otherCharacter.Health);
-            Assert.Equal(0, otherCharacter.Health);
-            Assert.True(otherCharacter.Alive);
+            MeleeCharacter.DealDamage(RangedCharacter, RangedCharacter.Health);
+            Assert.Equal(0, RangedCharacter.Health);
+            Assert.True(RangedCharacter.Alive);
         }
 
         [Fact]
         public void ThrowArgException_NegativeDamage()
         {
-            var ex = Record.Exception(() => someCharacter.DealDamage(otherCharacter, -1));
+            var ex = Record.Exception(() => MeleeCharacter.DealDamage(RangedCharacter, -1));
             Assert.IsType<ArgumentException>(ex);
             Assert.Equal("negative damage", ex.Message);
         }
@@ -43,7 +43,7 @@ namespace Rpg.Tests
         public void ThrowArgException_WhenTryToDamageItself()
         {
             
-            var ex = Record.Exception(() => someCharacter.DealDamage(someCharacter, 1));
+            var ex = Record.Exception(() => MeleeCharacter.DealDamage(MeleeCharacter, 1));
             Assert.IsType<ArgumentException>(ex);
             Assert.Equal("Can't damage to itself", ex.Message);
         }
@@ -51,35 +51,69 @@ namespace Rpg.Tests
         [Fact]
         public void LevelAbove5Level_DamageShouldReduce50_Succed()
         {
-            otherCharacter.Level = 6;
-            someCharacter.DealDamage(otherCharacter, 5);
-            Assert.Equal(997.5m, otherCharacter.Health );
+            RangedCharacter.Level = 6;
+            MeleeCharacter.DealDamage(RangedCharacter, 5);
+            Assert.Equal(997.5m, RangedCharacter.Health );
         }
 
         [Fact]
         public void LevelBelow5Level_DamageShouldIncrease50_Succed()
         {
-            someCharacter.Level = 6;
-            someCharacter.DealDamage(otherCharacter, 5);
-            Assert.Equal(992.5m, otherCharacter.Health );
+            MeleeCharacter.Level = 6;
+            MeleeCharacter.DealDamage(RangedCharacter, 5);
+            Assert.Equal(992.5m, RangedCharacter.Health );
         }
 
         [Fact]
         public void LevelMoreThan5Greater_RawDamageDoesntKill()
         {
-            otherCharacter.Level = 6;
-            someCharacter.DealDamage(otherCharacter, 1001);
-            Assert.True(otherCharacter.Alive);
-            Assert.Equal(499.5m, otherCharacter.Health);
+            RangedCharacter.Level = 6;
+            MeleeCharacter.DealDamage(RangedCharacter, 1001);
+            Assert.True(RangedCharacter.Alive);
+            Assert.Equal(499.5m, RangedCharacter.Health);
         }
 
         [Fact]
         public void LevelMoreThan5Below_AddedDamageKills()
         {
-            someCharacter.Level = 6;
-            someCharacter.DealDamage(otherCharacter, 667);
-            Assert.False(otherCharacter.Alive);
-            Assert.Equal(0, otherCharacter.Health);
+            MeleeCharacter.Level = 6;
+            MeleeCharacter.DealDamage(RangedCharacter, 667);
+            Assert.False(RangedCharacter.Alive);
+            Assert.Equal(0, RangedCharacter.Health);
+        }
+
+        [Fact]
+        public void MeleeCharacterInRange_DealDamageSucceed()
+        {
+            RangedCharacter.Position.x = 1;
+            MeleeCharacter.DealDamage(RangedCharacter, 1);
+            Assert.Equal(999, RangedCharacter.Health);
+        }
+
+        [Fact]
+        public void Exception_MeleeCharacterOutsideRange()
+        {
+            RangedCharacter.Position.x = 5;
+            var ex = Record.Exception(() => MeleeCharacter.DealDamage(RangedCharacter, 1));
+            Assert.IsType<TargetOutOfRangeException>(ex);
+            Assert.Equal("Target out of range", ex.Message);
+        }
+
+        [Fact]
+        public void RangedCharacterInRange_DealDamageSucceed()
+        {
+            RangedCharacter.Position.x = 13;
+            RangedCharacter.DealDamage(MeleeCharacter, 1);
+            Assert.Equal(999, MeleeCharacter.Health);
+        }
+
+        [Fact]
+        public void Exception_RangedCharacterOutsideRange()
+        {
+            RangedCharacter.Position.x = 30;
+            var ex = Record.Exception(() => RangedCharacter.DealDamage(MeleeCharacter, 1));
+            Assert.IsType<TargetOutOfRangeException>(ex);
+            Assert.Equal("Target out of range", ex.Message);
         }
     }
 }

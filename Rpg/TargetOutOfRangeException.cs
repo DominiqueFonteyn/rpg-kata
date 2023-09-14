@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Rpg
 {
-    public class RangedCharacter : Character
+    public class TargetOutOfRangeException: Exception
     {
-        public override int Range => 20;
+        public override string Message => "Target out of range";
     }
 }

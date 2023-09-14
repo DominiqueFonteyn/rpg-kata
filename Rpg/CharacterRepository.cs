@@ -12,7 +12,7 @@ public class CharacterRepository
         var character = new Character
             {
                 Name = name,
-                Health = 1000,
+                Health = GameConstants.StartHealth,
                 Level = 1,
                 FighterType = fighterType,
                 Postion = startPostion

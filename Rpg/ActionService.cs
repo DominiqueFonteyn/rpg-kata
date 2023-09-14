@@ -9,13 +9,13 @@ public class ActionService
         
         var distance = Math.Abs(attacker.Postion - receiver.Postion);
         if (attacker.FighterType == FighterType.Melee
-            && distance > 2)
+            && distance > GameConstants.MeleeRange)
         {
             return;
         }
         
         if (attacker.FighterType == FighterType.Ranged
-            && distance > 20)
+            && distance > GameConstants.RangedRange)
         {
             return;
         }
@@ -33,7 +33,7 @@ public class ActionService
     public void HealCharacter(Character healer, int amount)
     {
         if (healer.IsAlive)
-            healer.Health = Math.Min(healer.Health + amount, 1000);
+            healer.Health = Math.Min(healer.Health + amount, GameConstants.MaxHealth);
     }
 
     public void MoveCharacter(Character character, int distance)
